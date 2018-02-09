@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+require "./lib/pipeline"
+
+if File.exists?("./config/pipeline_config.rb")
+  load "./config/pipeline_config.rb"
+end
+
+if $pipeline.start
+  puts "success"
+else
+  puts "failed"
+end
