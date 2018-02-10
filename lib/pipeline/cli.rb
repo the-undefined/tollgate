@@ -3,16 +3,18 @@ module Pipeline
     module_function
 
     def call
-      pipe = Pipeline.pipe
-      pipe.instance_exec(&pipe.command_block)
+      config = Pipeline.config
+      runner = Runner.new
 
-      if pipe.success
+      runner.instance_exec(&config)
+
+      if runner.success
         puts "success"
       else
         puts "failed"
       end
 
-      pipe.success
+      runner.success
     end
   end
 end

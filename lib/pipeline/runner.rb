@@ -1,9 +1,8 @@
 module Pipeline
   class Runner
-    attr_reader :success, :command_block
+    attr_reader :success
 
-    def initialize(&command_block)
-      @command_block = command_block
+    def initialize
       @success = true
     end
 

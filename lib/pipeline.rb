@@ -3,10 +3,10 @@ require "pipeline/runner"
 
 module Pipeline
   class << self
-    attr_accessor :pipe
+    attr_accessor :config
   end
 
   def self.configure(&block)
-    self.pipe = Runner.new(&block)
+    self.config = block
   end
 end
