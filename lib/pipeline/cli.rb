@@ -7,10 +7,8 @@ module Pipeline
     def call(config_path: DEFAULT_CONFIG_PATH)
       load(config_path) if File.exist?(config_path)
 
-      commands = Pipeline.command_block
       runner = Runner.new
-
-      runner.instance_exec(&commands)
+      runner.(Pipeline.command_block)
 
       if runner.success
         puts "success"
