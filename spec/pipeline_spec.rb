@@ -1,32 +1,19 @@
-require "rspec"
-require "./lib/pipeline"
+require "spec_helper"
 
 RSpec.describe do
-  it "runs a successful command" do
-    Pipeline.configure do
-      run "./spec/scripts/exit_success"
+  describe "run from the command line" do
+    xit "can run a successful command" do
+      expect { system "bin/pipeline" }.to output(a_string_including("success"))
+                                            .to_stdout_from_any_process
     end
 
-    result = nil
-    expect { result = Pipeline::CLI.() }.to output(a_string_including("success")).to_stdout
+    context "without configuration" do
+      it "returns information on how to configure pipeline" do
+        information = "No configuration defined. Create a configuration file at config/pipeline_config.rb"
 
-    expect(result).to eq(true)
-  end
-
-  it "runs a failed command" do
-    Pipeline.configure do
-      run "./spec/scripts/exit_failed"
+        expect { system "bin/pipeline" }.to output(a_string_including(information))
+                                              .to_stdout_from_any_process
+      end
     end
-
-    result = nil
-
-    expect { result = Pipeline::CLI.() }.to output(a_string_including("failed")).to_stdout
-
-    expect(result).to eq(false)
-  end
-
-  it "can be run from the command line" do
-    expect { system "bin/pipeline" }.to output(a_string_including("success"))
-                                          .to_stdout_from_any_process
   end
 end
