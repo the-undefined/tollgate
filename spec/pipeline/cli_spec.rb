@@ -8,7 +8,7 @@ RSpec.describe Pipeline::CLI do
 
     result = nil
     expect { result = Pipeline::CLI.() }
-      .to output(a_string_including("success"))
+      .to output(a_string_including(described_class::SUCCESS_OUTPUT))
             .to_stdout
 
     expect(result).to eq(true)
@@ -22,7 +22,7 @@ RSpec.describe Pipeline::CLI do
     result = nil
 
     expect { result = Pipeline::CLI.() }
-      .to output(a_string_including("failed"))
+      .to output(a_string_including(described_class::FAILED_OUTPUT))
             .to_stdout
 
     expect(result).to eq(false)
