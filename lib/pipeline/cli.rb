@@ -3,6 +3,8 @@ module Pipeline
     module_function
 
     DEFAULT_CONFIG_PATH = "./config/pipeline_config.rb"
+    SUCCESS_OUTPUT = "Pipeline ran successfully"
+    FAILED_OUTPUT = "Pipeline failed"
 
     def call(config_path: DEFAULT_CONFIG_PATH)
       load(config_path) if File.exist?(config_path)
@@ -11,9 +13,9 @@ module Pipeline
       runner.(Pipeline.command_block)
 
       if runner.success
-        puts "success"
+        puts SUCCESS_OUTPUT
       else
-        puts "failed"
+        puts FAILED_OUTPUT
       end
 
       runner.success

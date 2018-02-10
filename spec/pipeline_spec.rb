@@ -4,19 +4,22 @@ require "fileutils"
 RSpec.describe do
   describe "run from the command line" do
     it "can run a configuration from the default config path" do
+      command_output = "a command was run"
+      pipeline_result = Pipeline::CLI::SUCCESS_OUTPUT
       path = "config/pipeline_config.rb"
-      FileUtils.mkdir_p("./config")
 
+      FileUtils.mkdir_p("./config")
       File.open(path, "w+") do |file|
         file.write <<~RUBY
           Pipeline.configure do
-            run "./spec/scripts/exit_success"
+            run %(echo '#{command_output}'; exit 0)
           end
         RUBY
       end
 
-      expect { system "bin/pipeline" }.to output(a_string_including("success"))
-                                            .to_stdout_from_any_process
+      expect { system "bin/pipeline" }
+        .to output(a_string_including(command_output). and(a_string_including(pipeline_result)))
+              .to_stdout_from_any_process
 
       File.delete(path)
       FileUtils.rm_rf("./config")
