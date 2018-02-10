@@ -1,22 +1,12 @@
 require "pipeline/cli"
+require "pipeline/pipe"
 
-class Pipeline
+module Pipeline
   class << self
     attr_accessor :pipe
   end
 
   def self.configure(&block)
-    self.pipe = new(&block)
-  end
-
-  attr_reader :success, :command_block
-
-  def initialize(&command_block)
-    @command_block = command_block
-    @success = true
-  end
-
-  def run(command_str)
-    @success = system(command_str) if @success
+    self.pipe = Pipe.new(&block)
   end
 end

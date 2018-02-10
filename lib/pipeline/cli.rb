@@ -1,4 +1,4 @@
-class Pipeline
+module Pipeline
   module CLI
     module_function
 
