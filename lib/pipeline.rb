@@ -1,5 +1,5 @@
 require "pipeline/cli"
-require "pipeline/pipe"
+require "pipeline/runner"
 
 module Pipeline
   class << self
@@ -7,6 +7,6 @@ module Pipeline
   end
 
   def self.configure(&block)
-    self.pipe = Pipe.new(&block)
+    self.pipe = Runner.new(&block)
   end
 end

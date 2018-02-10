@@ -1,5 +1,5 @@
 module Pipeline
-  class Pipe
+  class Runner
     attr_reader :success, :command_block
 
     def initialize(&command_block)
