@@ -7,7 +7,8 @@ RSpec.describe do
       run "./spec/scripts/exit_success"
     end
 
-    result = pipe.start
+    result = nil
+    expect { result = pipe.start }.to output(a_string_including("success")).to_stdout
 
     expect(result).to eq(true)
   end
@@ -17,7 +18,9 @@ RSpec.describe do
       run "./spec/scripts/exit_failed"
     end
 
-    result = pipe.start
+    result = nil
+
+    expect { result = pipe.start }.to output(a_string_including("failed")).to_stdout
 
     expect(result).to eq(false)
   end
