@@ -8,7 +8,7 @@ module Pipeline
     end
 
     def run(command_str)
-      @success = system(command_str) if @success
+      @success = system(command_str)
     end
   end
 end
