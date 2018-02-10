@@ -1,11 +1,7 @@
 module Pipeline
   module Errors
     class NoConfiguration < StandardError
-      def self.call
-        raise self, error_message
-      end
-
-      def self.error_message
+      def message
         <<~TEXT
 
 

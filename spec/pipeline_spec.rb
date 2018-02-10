@@ -40,7 +40,7 @@ RSpec.describe do
 
     context "without configuration" do
       it "returns information on how to configure pipeline" do
-        error_message = Pipeline::Errors::NoConfiguration.error_message
+        error_message = Pipeline::Errors::NoConfiguration.new.message
 
         expect { system "bin/pipeline" }.to output(a_string_including(error_message))
                                               .to_stderr_from_any_process
