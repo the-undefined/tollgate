@@ -9,4 +9,8 @@ module Pipeline
   def self.configure(&block)
     self.command_block = block
   end
+
+  def self.reset!
+    self.command_block = nil
+  end
 end

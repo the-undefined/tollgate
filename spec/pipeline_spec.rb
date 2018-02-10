@@ -2,6 +2,18 @@ require "spec_helper"
 require "fileutils"
 
 RSpec.describe do
+  describe "#reset" do
+    it "removes the command block" do
+      a_block = double("a block")
+      Pipeline.command_block = a_block
+
+      expect(Pipeline.command_block).to eq(a_block)
+
+      Pipeline.reset!
+
+      expect(Pipeline.command_block).to be_nil
+    end
+  end
   describe "run from the command line" do
     it "can run a configuration from the default config path" do
       command_output = "a command was run"
