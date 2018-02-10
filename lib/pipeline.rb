@@ -1,5 +1,6 @@
 require "pipeline/cli"
 require "pipeline/runner"
+require "pipeline/errors"
 
 module Pipeline
   class << self

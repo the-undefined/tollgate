@@ -27,4 +27,10 @@ RSpec.describe Pipeline::CLI do
 
     expect(result).to eq(false)
   end
+
+  context "Pipeline has not been configured" do
+    it "returns an informative error" do
+      expect { Pipeline::CLI.() }.to raise_exception(Pipeline::Errors::NoConfiguration)
+    end
+  end
 end

@@ -10,7 +10,7 @@ module Pipeline
       load(config_path) if File.exist?(config_path)
 
       runner = Runner.new
-      runner.(Pipeline.command_block)
+      runner.(Pipeline.command_block || Errors::NoConfiguration.call)
 
       if runner.success
         puts SUCCESS_OUTPUT

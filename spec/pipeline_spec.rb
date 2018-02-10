@@ -14,6 +14,7 @@ RSpec.describe do
       expect(Pipeline.command_block).to be_nil
     end
   end
+
   describe "run from the command line" do
     it "can run a configuration from the default config path" do
       command_output = "a command was run"
@@ -38,11 +39,11 @@ RSpec.describe do
     end
 
     context "without configuration" do
-      xit "returns information on how to configure pipeline" do
-        information = "No configuration defined. Create a configuration file at config/pipeline_config.rb"
+      it "returns information on how to configure pipeline" do
+        error_message = Pipeline::Errors::NoConfiguration.error_message
 
-        expect { system "bin/pipeline" }.to output(a_string_including(information))
-                                              .to_stdout_from_any_process
+        expect { system "bin/pipeline" }.to output(a_string_including(error_message))
+                                              .to_stderr_from_any_process
       end
     end
   end
