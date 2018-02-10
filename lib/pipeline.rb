@@ -1,8 +1,12 @@
 require "pipeline/cli"
 
 class Pipeline
+  class << self
+    attr_accessor :pipe
+  end
+
   def self.configure(&block)
-    $pipeline = new(&block)
+    self.pipe = new(&block)
   end
 
   attr_reader :success, :command_block

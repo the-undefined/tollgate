@@ -3,7 +3,7 @@ class Pipeline
     module_function
 
     def call
-      pipe = $pipeline
+      pipe = Pipeline.pipe
       pipe.instance_exec(&pipe.command_block)
 
       if pipe.success

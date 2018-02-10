@@ -3,7 +3,7 @@ require "./lib/pipeline"
 
 RSpec.describe do
   it "runs a successful command" do
-    pipe = Pipeline.configure do
+    Pipeline.configure do
       run "./spec/scripts/exit_success"
     end
 
@@ -14,7 +14,7 @@ RSpec.describe do
   end
 
   it "runs a failed command" do
-    pipe = Pipeline.configure do
+    Pipeline.configure do
       run "./spec/scripts/exit_failed"
     end
 
