@@ -24,4 +24,9 @@ RSpec.describe do
 
     expect(result).to eq(false)
   end
+
+  it "can be run from the command line" do
+    expect { system "bin/pipeline" }.to output(a_string_including("success"))
+                                          .to_stdout_from_any_process
+  end
 end
