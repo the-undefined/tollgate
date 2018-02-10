@@ -3,10 +3,10 @@ module Pipeline
     module_function
 
     def call
-      config = Pipeline.config
+      commands = Pipeline.command_block
       runner = Runner.new
 
-      runner.instance_exec(&config)
+      runner.instance_exec(&commands)
 
       if runner.success
         puts "success"
