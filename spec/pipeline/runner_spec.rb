@@ -71,6 +71,58 @@ RSpec.describe Pipeline::Runner do
       expect(Pipeline::Runner::Group).to have_received(:new).with(group_name)
     end
 
-    it "does not run subsequent commands after a failed group"
+    it "does not run subsequent commands after a failed group" do
+      allow_any_instance_of(Pipeline::Runner::Group).to receive(:call).and_return(false)
+
+      runner = described_class.new
+      expect_not_to_be_output = "this text should not be echoed"
+      command_block = proc do
+        group do
+          run %(exit 1)
+        end
+
+        run %(echo '#{expect_not_to_be_output}')
+      end
+
+      expect { runner.(command_block) }
+        .not_to output(a_string_including(expect_not_to_be_output))
+                  .to_stdout_from_any_process
+    end
+
+    it "does run subsequent commands after a successful group run" do
+      allow_any_instance_of(Pipeline::Runner::Group).to receive(:call).and_return(true)
+
+      runner = described_class.new
+      expect_to_be_output = "this text should be echoed"
+      command_block = proc do
+        group do
+          run %(exit 0)
+        end
+
+        run %(echo '#{expect_to_be_output}')
+      end
+
+      expect { runner.(command_block) }
+        .to output(a_string_including(expect_to_be_output))
+              .to_stdout_from_any_process
+    end
+
+    it "does not run subsequent group commands after a failed group run" do
+      runner = described_class.new
+      expect_not_to_be_output = "this text should not be echoed"
+      command_block = proc do
+        group do
+          run %(exit 1)
+        end
+
+        group do
+          run %(echo '#{expect_not_to_be_output}')
+        end
+      end
+
+      expect { runner.(command_block) }
+        .not_to output(a_string_including(expect_not_to_be_output))
+              .to_stdout_from_any_process
+    end
   end
 end

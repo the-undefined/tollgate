@@ -19,7 +19,7 @@ module Pipeline
     end
 
     def group(group_name = Undefined, &command_block)
-      Pipeline::Runner::Group.new(group_name).call(&command_block)
+      @success = Pipeline::Runner::Group.new(group_name).call(&command_block) if @success
     end
   end
 end
