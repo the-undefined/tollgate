@@ -36,4 +36,41 @@ RSpec.describe Pipeline::Runner do
       end
     end
   end
+
+  describe "#group" do
+    it "passes the command block to the group runner" do
+      group_dbl = double(:group_runner, call: true)
+      allow(Pipeline::Runner::Group).to receive(:new).and_return(group_dbl)
+
+      group_command_block = Proc.new {}
+      command_block = proc do
+        group &group_command_block
+      end
+
+      described_class.new.(command_block)
+
+      expect(Pipeline::Runner::Group).to have_received(:new)
+      expect(group_dbl).to have_received(:call) do |_, &block|
+        expect(block).to be(group_command_block)
+      end
+    end
+
+    it "passes the group name to the group runner" do
+      group_dbl = double(:group_runner, call: true)
+      allow(Pipeline::Runner::Group).to receive(:new).and_return(group_dbl)
+
+      group_name = "this is the group name"
+      command_block = proc do
+        group group_name do
+          # noop
+        end
+      end
+
+      described_class.new.(command_block)
+
+      expect(Pipeline::Runner::Group).to have_received(:new).with(group_name)
+    end
+
+    it "does not run subsequent commands after a failed group"
+  end
 end
