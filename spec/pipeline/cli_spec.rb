@@ -33,4 +33,17 @@ RSpec.describe Pipeline::CLI do
       expect { Pipeline::CLI.() }.to raise_exception(Pipeline::Errors::NoConfiguration)
     end
   end
+
+  it "can run a group of commands" do
+    expected_text = "The group is run"
+    Pipeline.configure do
+      group do
+        run %(echo '#{expected_text}')
+      end
+    end
+
+    expect { Pipeline::CLI.() }
+      .to output(a_string_including((expected_text)))
+            .to_stdout_from_any_process
+  end
 end

@@ -1,19 +1,6 @@
 require "spec_helper"
 
 RSpec.describe Pipeline::Runner::Group do
-  it "can be called from the pipeline configuration" do
-    expected_text = "The group is run"
-    Pipeline.configure do
-      group do
-        run %(echo '#{expected_text}')
-      end
-    end
-
-    expect { Pipeline::CLI.() }
-      .to output(a_string_including((expected_text)))
-            .to_stdout_from_any_process
-  end
-
   it "runs commands successfully" do
     command_block = proc do
       run %(exit 0)
