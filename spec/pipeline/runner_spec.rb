@@ -13,24 +13,37 @@ RSpec.describe Pipeline::Runner do
     expect(thing).to have_received(:call).once
   end
 
+  it "reports the status of commands" do
+    reporter = object_double(Pipeline::Reporter.new, record: nil)
+
+    command_block = proc do
+      run %(exit 0)
+      run %(exit 1)
+      run %(exit 2)
+    end
+
+    described_class.new(reporter: reporter).(command_block)
+
+    expect(reporter).to have_received(:record).with("exit 0", status: :success)
+    expect(reporter).to have_received(:record).with("exit 1", status: :failed)
+    expect(reporter).to have_received(:record).with("exit 2", status: :not_run)
+  end
+
   describe "#run" do
     context "a command run fails" do
       it "does not run subsequent commands" do
         fail_text = "this is a failure"
         success_text = "this is a success"
 
-        command_block = proc do
-          run %(echo '#{fail_text}'; exit 1)
-          run %(echo '#{success_text}'; exit 0)
-        end
-
         runner = described_class.new
 
-        expect { runner.(command_block) }
+        expect { runner.run(%(echo '#{fail_text}'; exit 1)) }
           .to output(a_string_including(fail_text))
                 .to_stdout_from_any_process
 
-        expect { runner.(command_block) }
+        expect(runner.success).to eq(false)
+
+        expect { runner.run(%(echo '#{success_text}'; exit 0)) }
           .not_to output(a_string_including(success_text))
                     .to_stdout_from_any_process
       end
@@ -38,6 +51,17 @@ RSpec.describe Pipeline::Runner do
   end
 
   describe "#group" do
+    it "passes the reporter to the group" do
+      group_dbl = double(:group_runner, call: true)
+      allow(Pipeline::Runner::Group).to receive(:new).and_return(group_dbl)
+      reporter = double(:reporter)
+      runner = described_class.new(reporter: reporter)
+
+      runner.group
+
+      expect(Pipeline::Runner::Group).to have_received(:new).with(any_args, reporter: reporter)
+    end
+
     it "passes the command block to the group runner" do
       group_dbl = double(:group_runner, call: true)
       allow(Pipeline::Runner::Group).to receive(:new).and_return(group_dbl)
@@ -68,7 +92,7 @@ RSpec.describe Pipeline::Runner do
 
       described_class.new.(command_block)
 
-      expect(Pipeline::Runner::Group).to have_received(:new).with(group_name)
+      expect(Pipeline::Runner::Group).to have_received(:new).with(group_name, any_args)
     end
 
     it "does not run subsequent commands after a failed group" do

@@ -89,4 +89,17 @@ Pipeline.config do
 end
 ```
 In the example above, if the first group fails then the second group will not be run, nor will
-any `run` commands that come later in the list or commands.
+any `run` commands that come later in the list or commands, the output would look like:
+
+```sh
+# ...
+
+FAIL: rubocop
+PASS: standard | snazzy
+NOT RUN: brakeman
+NOT RUN: rails_best_practices
+NOT RUN: rspec
+NOT RUN: cucumber
+
+Pipeline failed.
+```

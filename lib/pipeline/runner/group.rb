@@ -3,9 +3,18 @@ module Pipeline
     class Group
       include Dry::Core::Constants
 
-      def initialize(name = Undefined)
+      def initialize(name = Undefined, reporter: Pipeline::Reporter.new)
         @name = name
         @group_status = true
+        @reporter = reporter
+      end
+
+      def group_success?
+        !!@group_status
+      end
+
+      def group_failed?
+        !group_success?
       end
 
       def call(&command_block)
@@ -18,7 +27,13 @@ module Pipeline
 
       def run(command_str)
         result = system(command_str)
-        @group_status = result unless @group_status == false
+        @group_status = result if group_success?
+
+        if result
+          @reporter.record(command_str, status: :success)
+        else
+          @reporter.record(command_str, status: :failed)
+        end
       end
     end
   end

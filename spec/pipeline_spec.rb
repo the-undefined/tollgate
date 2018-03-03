@@ -17,8 +17,8 @@ RSpec.describe do
 
   describe "run from the command line" do
     it "can run a configuration from the default config path" do
-      command_output = "a command was run"
-      pipeline_result = Pipeline::CLI::SUCCESS_OUTPUT
+      command_output = "a command was run from the config file"
+      pipeline_result = Pipeline::Reporter::SUCCESS_OUTPUT
       path = "config/pipeline_config.rb"
 
       FileUtils.mkdir_p("./config")

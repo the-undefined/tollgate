@@ -1,3 +1,4 @@
+require_relative "reporter"
 require_relative "runner/group"
 
 module Pipeline
@@ -6,8 +7,17 @@ module Pipeline
 
     attr_reader :success
 
-    def initialize
+    def initialize(reporter: Pipeline::Reporter.new)
       @success = true
+      @reporter = reporter
+    end
+
+    def success?
+      !!@success
+    end
+
+    def failed?
+      !success?
     end
 
     def call(command_block)
@@ -15,11 +25,26 @@ module Pipeline
     end
 
     def run(command_str)
-      @success = system(command_str) if @success
+      return record_not_run(command_str) if failed?
+      @success = system(command_str)
+
+      if success?
+        @reporter.record(command_str, status: :success)
+      else
+        @reporter.record(command_str, status: :failed)
+      end
     end
 
     def group(group_name = Undefined, &command_block)
-      @success = Pipeline::Runner::Group.new(group_name).call(&command_block) if @success
+      return if failed?
+      group_runner = Pipeline::Runner::Group.new(group_name, reporter: @reporter)
+      @success = group_runner.call(&command_block)
+    end
+
+    private
+
+    def record_not_run(command_str)
+      @reporter.record(command_str, status: :not_run)
     end
   end
 end

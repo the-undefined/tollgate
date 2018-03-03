@@ -8,7 +8,7 @@ RSpec.describe Pipeline::CLI do
 
     result = nil
     expect { result = Pipeline::CLI.() }
-      .to output(a_string_including(described_class::SUCCESS_OUTPUT))
+      .to output(a_string_including(Pipeline::Reporter::SUCCESS_OUTPUT))
             .to_stdout
 
     expect(result).to eq(true)
@@ -20,9 +20,8 @@ RSpec.describe Pipeline::CLI do
     end
 
     result = nil
-
     expect { result = Pipeline::CLI.() }
-      .to output(a_string_including(described_class::FAILED_OUTPUT))
+      .to output(a_string_including(Pipeline::Reporter::FAILED_OUTPUT))
             .to_stdout
 
     expect(result).to eq(false)
@@ -45,5 +44,31 @@ RSpec.describe Pipeline::CLI do
     expect { Pipeline::CLI.() }
       .to output(a_string_including((expected_text)))
             .to_stdout_from_any_process
+  end
+
+  it "outputs the status of the commands" do
+    Pipeline.configure do
+      run %(exit 0)
+
+      group do
+        run %(exit 1)
+        run %(exit 2)
+      end
+
+      run %(exit 3)
+    end
+    cmd_0_output = "PASS: exit 0"
+    cmd_1_output = "FAIL: exit 1"
+    cmd_2_output = "FAIL: exit 2"
+    cmd_3_output = "NOT RUN: exit 3"
+
+    expected_output =
+      a_string_including(cmd_0_output)
+        .and(a_string_including(cmd_1_output))
+        .and(a_string_including(cmd_2_output))
+        .and(a_string_including(cmd_3_output))
+
+    expect { Pipeline::CLI.() }
+      .to output(expected_output).to_stdout
   end
 end
