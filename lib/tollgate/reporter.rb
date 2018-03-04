@@ -1,15 +1,15 @@
 require_relative "reporter/records"
 
-module Pipeline
+module Tollgate
   class Reporter
-    SUCCESS_OUTPUT = "Pipeline finished successfully"
-    FAILED_OUTPUT = "Pipeline failed"
+    SUCCESS_OUTPUT = "Tollgate finished successfully"
+    FAILED_OUTPUT = "Tollgate failed"
 
     Record = Struct.new(:command, :status)
 
     attr_reader :records
     def initialize
-      @records = Pipeline::Reporter::Records.new
+      @records = Tollgate::Reporter::Records.new
     end
 
     def record(command, status:)

@@ -1,6 +1,6 @@
 require_relative "errors/no_configuration"
 
-module Pipeline
+module Tollgate
   module Errors
   end
 end

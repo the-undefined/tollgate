@@ -1,9 +1,9 @@
-module Pipeline
+module Tollgate
   class Runner
     class Group
       include Dry::Core::Constants
 
-      def initialize(name = Undefined, reporter: Pipeline::Reporter.new)
+      def initialize(name = Undefined, reporter: Tollgate::Reporter.new)
         @name = name
         @group_status = true
         @reporter = reporter

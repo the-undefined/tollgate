@@ -1,9 +1,9 @@
 require "dry/core/constants"
-require "pipeline/cli"
-require "pipeline/runner"
-require "pipeline/errors"
+require "tollgate/cli"
+require "tollgate/runner"
+require "tollgate/errors"
 
-module Pipeline
+module Tollgate
   class << self
     attr_accessor :command_block
   end

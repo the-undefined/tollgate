@@ -1,12 +1,12 @@
 require "byebug"
 require "rspec"
-require "pipeline"
+require "tollgate"
 
 RSpec.configure do |config|
   config.before(:each) do
-    Pipeline.reset!
+    Tollgate.reset!
 
-    path = "config/pipeline_config.rb"
+    path = "config/tollgate_config.rb"
     if File.exists?(path)
       File.delete(path)
       FileUtils.rm_rf("./config")

@@ -1,6 +1,6 @@
 require "delegate"
 
-module Pipeline
+module Tollgate
   class Reporter
     class Records < DelegateClass(Array)
       def initialize

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Pipeline::Reporter do
+RSpec.describe Tollgate::Reporter do
   describe "#report" do
     it "outputs the records" do
       reporter = described_class.new
@@ -19,13 +19,13 @@ RSpec.describe Pipeline::Reporter do
     it "outputs a success message" do
       report = described_class.new.report(success: true)
 
-      expect(report).to include(Pipeline::Reporter::SUCCESS_OUTPUT)
+      expect(report).to include(Tollgate::Reporter::SUCCESS_OUTPUT)
     end
 
     it "outputs a failed message" do
       report = described_class.new.report(success: false)
 
-      expect(report).to include(Pipeline::Reporter::FAILED_OUTPUT)
+      expect(report).to include(Tollgate::Reporter::FAILED_OUTPUT)
     end
   end
 

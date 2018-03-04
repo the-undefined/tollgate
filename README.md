@@ -1,10 +1,10 @@
-# Pipeline
+# Tollgate
 
 Making it easy to add static code analysers to your workflow.
-Build a pipeline of commands to run locally and on your CI server.
+Build a tollgate of commands to run locally and on your CI server.
 
-For a successfull pipeline run all the commands will return a zero exit code,
-if any of the commands return a non-zero exit code then the pipeline will also
+For a successfull tollgate run all the commands will return a zero exit code,
+if any of the commands return a non-zero exit code then the tollgate will also
 return a non-zero exit code, which when used on CI will fail the build.
 
 ## Quickstart
@@ -13,24 +13,24 @@ Add the gem to your project:
 
 ```rb
 group :development do
-  gem "pipeline", require: false
+  gem "tollgate", require: false
 end
 ```
 
-Define a configuration file at `config/pipeline.rb`
+Define a configuration file at `config/tollgate.rb`
 
 ```rb
-Pipeline.config do
+Tollgate.config do
   run "rubocop"
   run "brakeman"
   run "rspec"
 end
 ```
 
-Then use the `pipeline` command to run your pipeline:
+Then use the `tollgate` command to run your tollgate:
 
 ```sh
-$ pipeline
+$ tollgate
 # ... output from commands being run
 
 PASS: rubocop
@@ -41,16 +41,16 @@ FAIL rspec
 ## Grouping Commands
 
 Sometimes you may want several commands to run regardless if one of them has failed,
-so that you can make related changes before running the pipeline again.
+so that you can make related changes before running the tollgate again.
 
 For instance `rubocop` and `standard` are commands that check for Ruby and JavaScript
 code styles and make sense for you to get the output of both of these at the same time.
 Whereas `rubocop` and `rspec` are not related in their information, and running a test
-suite takes longer, so you would probably like to get the pipeline to fail early so
-that you can fix the style changes before running the pipeline again.
+suite takes longer, so you would probably like to get the tollgate to fail early so
+that you can fix the style changes before running the tollgate again.
 
 ```rb
-Pipeline.config do
+Tollgate.config do
   group :styles do
     run "rubocop"
     run "standard | snazzy"
@@ -61,7 +61,7 @@ end
 ```
 
 ```sh
-$ pipeline
+$ tollgate
 # ... output from commands being run
 
 PASS: rubocop
@@ -73,7 +73,7 @@ You do not need to specify a group name if you can't think of one, (naming thing
 and you can specify as many as you like:
 
 ```rb
-Pipeline.config do
+Tollgate.config do
   group do
     run "rubocop"
     run "standard | snazzy"
@@ -101,5 +101,5 @@ NOT RUN: rails_best_practices
 NOT RUN: rspec
 NOT RUN: cucumber
 
-Pipeline failed.
+Tollgate failed.
 ```

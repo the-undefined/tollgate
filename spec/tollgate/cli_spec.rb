@@ -1,53 +1,53 @@
 require "spec_helper"
 
-RSpec.describe Pipeline::CLI do
+RSpec.describe Tollgate::CLI do
   it "runs a successful command" do
-    Pipeline.configure do
+    Tollgate.configure do
       run %(exit 0)
     end
 
     result = nil
-    expect { result = Pipeline::CLI.() }
-      .to output(a_string_including(Pipeline::Reporter::SUCCESS_OUTPUT))
+    expect { result = Tollgate::CLI.() }
+      .to output(a_string_including(Tollgate::Reporter::SUCCESS_OUTPUT))
             .to_stdout
 
     expect(result).to eq(true)
   end
 
   it "runs a failed command" do
-    Pipeline.configure do
+    Tollgate.configure do
       run %(exit 1)
     end
 
     result = nil
-    expect { result = Pipeline::CLI.() }
-      .to output(a_string_including(Pipeline::Reporter::FAILED_OUTPUT))
+    expect { result = Tollgate::CLI.() }
+      .to output(a_string_including(Tollgate::Reporter::FAILED_OUTPUT))
             .to_stdout
 
     expect(result).to eq(false)
   end
 
-  context "Pipeline has not been configured" do
+  context "Tollgate has not been configured" do
     it "returns an informative error" do
-      expect { Pipeline::CLI.() }.to raise_exception(Pipeline::Errors::NoConfiguration)
+      expect { Tollgate::CLI.() }.to raise_exception(Tollgate::Errors::NoConfiguration)
     end
   end
 
   it "can run a group of commands" do
     expected_text = "The group is run"
-    Pipeline.configure do
+    Tollgate.configure do
       group do
         run %(echo '#{expected_text}')
       end
     end
 
-    expect { Pipeline::CLI.() }
+    expect { Tollgate::CLI.() }
       .to output(a_string_including((expected_text)))
             .to_stdout_from_any_process
   end
 
   it "outputs the status of the commands" do
-    Pipeline.configure do
+    Tollgate.configure do
       run %(exit 0)
 
       group do
@@ -68,7 +68,7 @@ RSpec.describe Pipeline::CLI do
         .and(a_string_including(cmd_2_output))
         .and(a_string_including(cmd_3_output))
 
-    expect { Pipeline::CLI.() }
+    expect { Tollgate::CLI.() }
       .to output(expected_output).to_stdout
   end
 end

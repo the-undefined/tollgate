@@ -1,4 +1,4 @@
-module Pipeline
+module Tollgate
   module Errors
     class NoConfiguration < StandardError
       def message
@@ -8,7 +8,7 @@ module Pipeline
           ERROR: There is no configuration block defined for Pipline
           ==========================================================
 
-          Create a file at `#{CLI::DEFAULT_CONFIG_PATH}` and define your pipeline using the `run` method:
+          Create a file at `#{CLI::DEFAULT_CONFIG_PATH}` and define your tollgate using the `run` method:
 
           ```
           Pipline.configure do

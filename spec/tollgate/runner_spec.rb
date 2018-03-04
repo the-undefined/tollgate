@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Pipeline::Runner do
+RSpec.describe Tollgate::Runner do
   it "runs a command block" do
     thing = double("thing")
     allow(thing).to receive(:call)
@@ -14,7 +14,7 @@ RSpec.describe Pipeline::Runner do
   end
 
   it "reports the status of commands" do
-    reporter = object_double(Pipeline::Reporter.new, record: nil)
+    reporter = object_double(Tollgate::Reporter.new, record: nil)
 
     command_block = proc do
       run %(exit 0)
@@ -53,18 +53,18 @@ RSpec.describe Pipeline::Runner do
   describe "#group" do
     it "passes the reporter to the group" do
       group_dbl = double(:group_runner, call: true)
-      allow(Pipeline::Runner::Group).to receive(:new).and_return(group_dbl)
+      allow(Tollgate::Runner::Group).to receive(:new).and_return(group_dbl)
       reporter = double(:reporter)
       runner = described_class.new(reporter: reporter)
 
       runner.group
 
-      expect(Pipeline::Runner::Group).to have_received(:new).with(any_args, reporter: reporter)
+      expect(Tollgate::Runner::Group).to have_received(:new).with(any_args, reporter: reporter)
     end
 
     it "passes the command block to the group runner" do
       group_dbl = double(:group_runner, call: true)
-      allow(Pipeline::Runner::Group).to receive(:new).and_return(group_dbl)
+      allow(Tollgate::Runner::Group).to receive(:new).and_return(group_dbl)
 
       group_command_block = Proc.new {}
       command_block = proc do
@@ -73,7 +73,7 @@ RSpec.describe Pipeline::Runner do
 
       described_class.new.(command_block)
 
-      expect(Pipeline::Runner::Group).to have_received(:new)
+      expect(Tollgate::Runner::Group).to have_received(:new)
       expect(group_dbl).to have_received(:call) do |_, &block|
         expect(block).to be(group_command_block)
       end
@@ -81,7 +81,7 @@ RSpec.describe Pipeline::Runner do
 
     it "passes the group name to the group runner" do
       group_dbl = double(:group_runner, call: true)
-      allow(Pipeline::Runner::Group).to receive(:new).and_return(group_dbl)
+      allow(Tollgate::Runner::Group).to receive(:new).and_return(group_dbl)
 
       group_name = "this is the group name"
       command_block = proc do
@@ -92,11 +92,11 @@ RSpec.describe Pipeline::Runner do
 
       described_class.new.(command_block)
 
-      expect(Pipeline::Runner::Group).to have_received(:new).with(group_name, any_args)
+      expect(Tollgate::Runner::Group).to have_received(:new).with(group_name, any_args)
     end
 
     it "does not run subsequent commands after a failed group" do
-      allow_any_instance_of(Pipeline::Runner::Group).to receive(:call).and_return(false)
+      allow_any_instance_of(Tollgate::Runner::Group).to receive(:call).and_return(false)
 
       runner = described_class.new
       expect_not_to_be_output = "this text should not be echoed"
@@ -114,7 +114,7 @@ RSpec.describe Pipeline::Runner do
     end
 
     it "does run subsequent commands after a successful group run" do
-      allow_any_instance_of(Pipeline::Runner::Group).to receive(:call).and_return(true)
+      allow_any_instance_of(Tollgate::Runner::Group).to receive(:call).and_return(true)
 
       runner = described_class.new
       expect_to_be_output = "this text should be echoed"

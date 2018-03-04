@@ -1,13 +1,13 @@
 require_relative "reporter"
 require_relative "runner/group"
 
-module Pipeline
+module Tollgate
   class Runner
     include Dry::Core::Constants
 
     attr_reader :success
 
-    def initialize(reporter: Pipeline::Reporter.new)
+    def initialize(reporter: Tollgate::Reporter.new)
       @success = true
       @reporter = reporter
     end
@@ -37,7 +37,7 @@ module Pipeline
 
     def group(group_name = Undefined, &command_block)
       return if failed?
-      group_runner = Pipeline::Runner::Group.new(group_name, reporter: @reporter)
+      group_runner = Tollgate::Runner::Group.new(group_name, reporter: @reporter)
       @success = group_runner.call(&command_block)
     end
 

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Pipeline::Runner::Group do
+RSpec.describe Tollgate::Runner::Group do
   it "runs commands successfully" do
     command_block = proc do
       run %(exit 0)
@@ -12,7 +12,7 @@ RSpec.describe Pipeline::Runner::Group do
   end
 
   it "reports the status of commands" do
-    reporter = object_double(Pipeline::Reporter.new, record: nil)
+    reporter = object_double(Tollgate::Reporter.new, record: nil)
 
     command_block = proc do
       run %(exit 0)
