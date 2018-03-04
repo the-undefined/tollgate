@@ -25,7 +25,7 @@ module Tollgate
         @group_status
       end
 
-      def run(command_str)
+      def check(command_str)
         result = system(command_str)
         @group_status = result if group_success?
 

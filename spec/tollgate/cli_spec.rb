@@ -1,22 +1,22 @@
 require "spec_helper"
 
 RSpec.describe Tollgate::CLI do
-  it "runs a successful command" do
+  it "checks a successful command" do
     Tollgate.configure do
-      run %(exit 0)
+      check %(exit 0)
     end
 
     result = nil
     expect { result = Tollgate::CLI.() }
-      .to output(a_string_including(Tollgate::Reporter::SUCCESS_OUTPUT))
-            .to_stdout
+     .to output(a_string_including(Tollgate::Reporter::SUCCESS_OUTPUT))
+           .to_stdout
 
     expect(result).to eq(true)
   end
 
-  it "runs a failed command" do
+  it "checks a failed command" do
     Tollgate.configure do
-      run %(exit 1)
+      check %(exit 1)
     end
 
     result = nil
@@ -33,11 +33,11 @@ RSpec.describe Tollgate::CLI do
     end
   end
 
-  it "can run a group of commands" do
-    expected_text = "The group is run"
+  it "can check a group of commands" do
+    expected_text = "The group is check"
     Tollgate.configure do
       group do
-        run %(echo '#{expected_text}')
+        check %(echo '#{expected_text}')
       end
     end
 
@@ -48,14 +48,14 @@ RSpec.describe Tollgate::CLI do
 
   it "outputs the status of the commands" do
     Tollgate.configure do
-      run %(exit 0)
+      check %(exit 0)
 
       group do
-        run %(exit 1)
-        run %(exit 2)
+        check %(exit 1)
+        check %(exit 2)
       end
 
-      run %(exit 3)
+      check %(exit 3)
     end
     cmd_0_output = "PASS: exit 0"
     cmd_1_output = "FAIL: exit 1"

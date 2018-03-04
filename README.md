@@ -1,9 +1,9 @@
 # Tollgate
 
 Making it easy to add static code analysers to your workflow.
-Build a tollgate of commands to run locally and on your CI server.
+Build a tollgate of commands to check locally and on your CI server.
 
-For a successfull tollgate run all the commands will return a zero exit code,
+For a successfull tollgate check all the commands will return a zero exit code,
 if any of the commands return a non-zero exit code then the tollgate will also
 return a non-zero exit code, which when used on CI will fail the build.
 
@@ -21,9 +21,9 @@ Define a configuration file at `config/tollgate.rb`
 
 ```rb
 Tollgate.config do
-  run "rubocop"
-  run "brakeman"
-  run "rspec"
+  check "rubocop"
+  check "brakeman"
+  check "rspec"
 end
 ```
 
@@ -31,7 +31,7 @@ Then use the `tollgate` command to run your tollgate:
 
 ```sh
 $ tollgate
-# ... output from commands being run
+# ... output from commands being check
 
 PASS: rubocop
 PASS: brakeman
@@ -52,11 +52,11 @@ that you can fix the style changes before running the tollgate again.
 ```rb
 Tollgate.config do
   group :styles do
-    run "rubocop"
-    run "standard | snazzy"
+    check "rubocop"
+    check "standard | snazzy"
   end
   
-  run "rspec"
+  check "rspec"
 end
 ```
 
@@ -75,21 +75,21 @@ and you can specify as many as you like:
 ```rb
 Tollgate.config do
   group do
-    run "rubocop"
-    run "standard | snazzy"
+    check "rubocop"
+    check "standard | snazzy"
   end
 
   group do
-    run "brakeman"
-    run "rails_best_practices"
+    check "brakeman"
+    check "rails_best_practices"
   end
 
-  run "rspec"
-  run "cucumber"
+  check "rspec"
+  check "cucumber"
 end
 ```
 In the example above, if the first group fails then the second group will not be run, nor will
-any `run` commands that come later in the list or commands, the output would look like:
+any `check` commands that come later in the list or commands, the output would look like:
 
 ```sh
 # ...

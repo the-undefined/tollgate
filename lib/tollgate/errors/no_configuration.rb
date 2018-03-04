@@ -8,12 +8,12 @@ module Tollgate
           ERROR: There is no configuration block defined for Pipline
           ==========================================================
 
-          Create a file at `#{CLI::DEFAULT_CONFIG_PATH}` and define your tollgate using the `run` method:
+          Create a file at `#{CLI::DEFAULT_CONFIG_PATH}` and define your tollgate using the `check` method:
 
           ```
           Pipline.configure do
-            run "./an_executable_in_my_path"
-            run "./another_executable_in_my_path"
+            check "./an_executable_in_my_path"
+            check "./another_executable_in_my_path"
           end
           ```
         TEXT

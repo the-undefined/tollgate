@@ -25,7 +25,7 @@ RSpec.describe do
       File.open(path, "w+") do |file|
         file.write <<~RUBY
           Tollgate.configure do
-            run %(echo '#{command_output}'; exit 0)
+            check %(echo '#{command_output}'; exit 0)
           end
         RUBY
       end

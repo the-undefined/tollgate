@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe Tollgate::Runner do
-  it "runs a command block" do
+  it "checks a command block" do
     thing = double("thing")
     allow(thing).to receive(:call)
     command_block = proc { thing.call }
@@ -17,9 +17,9 @@ RSpec.describe Tollgate::Runner do
     reporter = object_double(Tollgate::Reporter.new, record: nil)
 
     command_block = proc do
-      run %(exit 0)
-      run %(exit 1)
-      run %(exit 2)
+      check %(exit 0)
+      check %(exit 1)
+      check %(exit 2)
     end
 
     described_class.new(reporter: reporter).(command_block)
@@ -29,21 +29,21 @@ RSpec.describe Tollgate::Runner do
     expect(reporter).to have_received(:record).with("exit 2", status: :not_run)
   end
 
-  describe "#run" do
-    context "a command run fails" do
-      it "does not run subsequent commands" do
+  describe "#check" do
+    context "a command check fails" do
+      it "does not check subsequent commands" do
         fail_text = "this is a failure"
         success_text = "this is a success"
 
         runner = described_class.new
 
-        expect { runner.run(%(echo '#{fail_text}'; exit 1)) }
+        expect { runner.check(%(echo '#{fail_text}'; exit 1)) }
           .to output(a_string_including(fail_text))
                 .to_stdout_from_any_process
 
         expect(runner.success).to eq(false)
 
-        expect { runner.run(%(echo '#{success_text}'; exit 0)) }
+        expect { runner.check(%(echo '#{success_text}'; exit 0)) }
           .not_to output(a_string_including(success_text))
                     .to_stdout_from_any_process
       end
@@ -95,17 +95,17 @@ RSpec.describe Tollgate::Runner do
       expect(Tollgate::Runner::Group).to have_received(:new).with(group_name, any_args)
     end
 
-    it "does not run subsequent commands after a failed group" do
+    it "does not check subsequent commands after a failed group" do
       allow_any_instance_of(Tollgate::Runner::Group).to receive(:call).and_return(false)
 
       runner = described_class.new
       expect_not_to_be_output = "this text should not be echoed"
       command_block = proc do
         group do
-          run %(exit 1)
+         check %(exit 1)
         end
 
-        run %(echo '#{expect_not_to_be_output}')
+        check %(echo '#{expect_not_to_be_output}')
       end
 
       expect { runner.(command_block) }
@@ -113,17 +113,17 @@ RSpec.describe Tollgate::Runner do
                   .to_stdout_from_any_process
     end
 
-    it "does run subsequent commands after a successful group run" do
+    it "does check subsequent commands after a successful group check" do
       allow_any_instance_of(Tollgate::Runner::Group).to receive(:call).and_return(true)
 
       runner = described_class.new
       expect_to_be_output = "this text should be echoed"
       command_block = proc do
         group do
-          run %(exit 0)
+          check %(exit 0)
         end
 
-        run %(echo '#{expect_to_be_output}')
+        check %(echo '#{expect_to_be_output}')
       end
 
       expect { runner.(command_block) }
@@ -131,16 +131,16 @@ RSpec.describe Tollgate::Runner do
               .to_stdout_from_any_process
     end
 
-    it "does not run subsequent group commands after a failed group run" do
+    it "does not check subsequent group commands after a failed group check" do
       runner = described_class.new
       expect_not_to_be_output = "this text should not be echoed"
       command_block = proc do
         group do
-          run %(exit 1)
+          check %(exit 1)
         end
 
         group do
-          run %(echo '#{expect_not_to_be_output}')
+          check %(echo '#{expect_not_to_be_output}')
         end
       end
 

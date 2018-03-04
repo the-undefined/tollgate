@@ -24,7 +24,7 @@ module Tollgate
       instance_exec(&command_block)
     end
 
-    def run(command_str)
+    def check(command_str)
       return record_not_run(command_str) if failed?
       @success = system(command_str)
 
