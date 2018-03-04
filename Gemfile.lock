@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     tollgate (0.1.0)
+      dry-core
 
 GEM
   remote: https://rubygems.org/
@@ -32,7 +33,6 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.16)
   byebug
-  dry-core
   rake (~> 10.0)
   rspec (~> 3.0)
   tollgate!

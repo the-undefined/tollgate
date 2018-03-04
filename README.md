@@ -21,7 +21,7 @@ group :development do
 end
 ```
 
-Define a configuration file at `config/tollgate.rb`
+Define a configuration file at `config/tollgate_config.rb`
 
 ```rb
 Tollgate.config do
