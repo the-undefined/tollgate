@@ -2,14 +2,14 @@
 
 Have you paid your code toll? To get your code into the groomed and uniform metropolis
 where the static analysers enforcers run the place then you need to put extra effort
-and pay the code toll. Build a better future!
+and pay the code toll. Invest in a better future!
 
 Making it easy to add static code analysers to your workflow.
 Build a list of shell commands to execute and check your code locally and on your CI server.
 
-For a successful tollgate check all the commands will return a zero exit code,
-if any of the commands return a non-zero exit code then the tollgate will also
-return a non-zero exit code, which when used on CI will fail the build.
+All checks need to pass before the tollgate approves the code, if any of the check fail
+then a non-zero exit status will be returned, so if using on CI server then the build
+will fail too.
 
 ## Quickstart
 
