@@ -30,7 +30,7 @@ RSpec.describe do
         RUBY
       end
 
-      expect { system "bin/tollgate" }
+      expect { system "exe/tollgate" }
         .to output(a_string_including(command_output). and(a_string_including(tollgate_result)))
               .to_stdout_from_any_process
 
@@ -42,7 +42,7 @@ RSpec.describe do
       it "returns information on how to configure tollgate" do
         error_message = Tollgate::Errors::NoConfiguration.new.message
 
-        expect { system "bin/tollgate" }.to output(a_string_including(error_message))
+        expect { system "exe/tollgate" }.to output(a_string_including(error_message))
                                               .to_stderr_from_any_process
       end
     end
