@@ -1,9 +1,13 @@
 # Tollgate
 
-Making it easy to add static code analysers to your workflow.
-Build a tollgate of commands to check locally and on your CI server.
+Have you paid your code toll? To get your code into the groomed and uniform metropolis
+where the static analysers enforcers run the place then you need to put extra effort
+and pay the code toll. Build a better future!
 
-For a successfull tollgate check all the commands will return a zero exit code,
+Making it easy to add static code analysers to your workflow.
+Build a list of shell commands to execute and check your code locally and on your CI server.
+
+For a successful tollgate check all the commands will return a zero exit code,
 if any of the commands return a non-zero exit code then the tollgate will also
 return a non-zero exit code, which when used on CI will fail the build.
 
@@ -40,11 +44,11 @@ FAIL rspec
 
 ## Grouping Commands
 
-Sometimes you may want several commands to run regardless if one of them has failed,
+Sometimes you may want several checks to run regardless if one of them has failed,
 so that you can make related changes before running the tollgate again.
 
-For instance `rubocop` and `standard` are commands that check for Ruby and JavaScript
-code styles and make sense for you to get the output of both of these at the same time.
+For instance `rubocop` and `standard` check for Ruby and JavaScript
+code styles and it makes sense for you to get the output of both of these at the same time.
 Whereas `rubocop` and `rspec` are not related in their information, and running a test
 suite takes longer, so you would probably like to get the tollgate to fail early so
 that you can fix the style changes before running the tollgate again.
@@ -62,7 +66,7 @@ end
 
 ```sh
 $ tollgate
-# ... output from commands being run
+# ... output from checks being run
 
 PASS: rubocop
 FAIL: standard | snazzy
@@ -89,7 +93,7 @@ Tollgate.config do
 end
 ```
 In the example above, if the first group fails then the second group will not be run, nor will
-any `check` commands that come later in the list or commands, the output would look like:
+any checks that come later in the list, the output would look like:
 
 ```sh
 # ...
