@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe Tollgate::Reporter do
@@ -10,9 +12,9 @@ RSpec.describe Tollgate::Reporter do
       reporter.record("command 3", status: :not_run)
 
       expect(reporter.report(success: false)).to include <<~OUTPUT
-      PASS: command 1
-      FAIL: command 2
-      NOT RUN: command 3
+        PASS: command 1
+        FAIL: command 2
+        NOT RUN: command 3
       OUTPUT
     end
 
@@ -39,12 +41,12 @@ RSpec.describe Tollgate::Reporter do
 
       expect(reporter.records.to_a)
         .to match_array(
-              [
-                ["command 1", :success],
-                ["command 2", :failed],
-                ["command 3", :not_run]
-              ]
-            )
+          [
+            ["command 1", :success],
+            ["command 2", :failed],
+            ["command 3", :not_run]
+          ]
+        )
     end
   end
 end

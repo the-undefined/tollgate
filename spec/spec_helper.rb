@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "byebug"
 require "rspec"
 require "tollgate"
@@ -7,7 +9,7 @@ RSpec.configure do |config|
     Tollgate.reset!
 
     path = "config/tollgate_config.rb"
-    if File.exists?(path)
+    if File.exist?(path)
       File.delete(path)
       FileUtils.rm_rf("./config")
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe Tollgate::CLI do
@@ -8,8 +10,8 @@ RSpec.describe Tollgate::CLI do
 
     result = nil
     expect { result = Tollgate::CLI.() }
-     .to output(a_string_including(Tollgate::Reporter::SUCCESS_OUTPUT))
-           .to_stdout
+      .to output(a_string_including(Tollgate::Reporter::SUCCESS_OUTPUT))
+      .to_stdout
 
     expect(result).to eq(true)
   end
@@ -22,7 +24,7 @@ RSpec.describe Tollgate::CLI do
     result = nil
     expect { result = Tollgate::CLI.() }
       .to output(a_string_including(Tollgate::Reporter::FAILED_OUTPUT))
-            .to_stdout
+      .to_stdout
 
     expect(result).to eq(false)
   end
@@ -42,8 +44,8 @@ RSpec.describe Tollgate::CLI do
     end
 
     expect { Tollgate::CLI.() }
-      .to output(a_string_including((expected_text)))
-            .to_stdout_from_any_process
+      .to output(a_string_including(expected_text))
+      .to_stdout_from_any_process
   end
 
   it "outputs the status of the commands" do
@@ -64,9 +66,9 @@ RSpec.describe Tollgate::CLI do
 
     expected_output =
       a_string_including(cmd_0_output)
-        .and(a_string_including(cmd_1_output))
-        .and(a_string_including(cmd_2_output))
-        .and(a_string_including(cmd_3_output))
+      .and(a_string_including(cmd_1_output))
+      .and(a_string_including(cmd_2_output))
+      .and(a_string_including(cmd_3_output))
 
     expect { Tollgate::CLI.() }
       .to output(expected_output).to_stdout

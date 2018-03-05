@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require "fileutils"
 
@@ -32,7 +34,7 @@ RSpec.describe do
 
       expect { system "exe/tollgate" }
         .to output(a_string_including(command_output). and(a_string_including(tollgate_result)))
-              .to_stdout_from_any_process
+        .to_stdout_from_any_process
 
       File.delete(path)
       FileUtils.rm_rf("./config")
@@ -43,7 +45,7 @@ RSpec.describe do
         error_message = Tollgate::Errors::NoConfiguration.new.message
 
         expect { system "exe/tollgate" }.to output(a_string_including(error_message))
-                                              .to_stderr_from_any_process
+          .to_stderr_from_any_process
       end
     end
   end

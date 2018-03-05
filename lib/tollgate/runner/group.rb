@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Tollgate
   class Runner
     class Group
@@ -10,7 +12,7 @@ module Tollgate
       end
 
       def group_success?
-        !!@group_status
+        @group_status
       end
 
       def group_failed?

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe Tollgate::Runner do
   it "checks a command block" do
     thing = double("thing")
     allow(thing).to receive(:call)
-    command_block = proc { thing.call }
+    command_block = proc { thing.() }
 
     expect(thing).not_to have_received(:call)
 
@@ -39,13 +41,13 @@ RSpec.describe Tollgate::Runner do
 
         expect { runner.check(%(echo '#{fail_text}'; exit 1)) }
           .to output(a_string_including(fail_text))
-                .to_stdout_from_any_process
+          .to_stdout_from_any_process
 
         expect(runner.success).to eq(false)
 
         expect { runner.check(%(echo '#{success_text}'; exit 0)) }
           .not_to output(a_string_including(success_text))
-                    .to_stdout_from_any_process
+          .to_stdout_from_any_process
       end
     end
   end
@@ -66,9 +68,9 @@ RSpec.describe Tollgate::Runner do
       group_dbl = double(:group_runner, call: true)
       allow(Tollgate::Runner::Group).to receive(:new).and_return(group_dbl)
 
-      group_command_block = Proc.new {}
+      group_command_block = proc {}
       command_block = proc do
-        group &group_command_block
+        group(&group_command_block)
       end
 
       described_class.new.(command_block)
@@ -102,7 +104,7 @@ RSpec.describe Tollgate::Runner do
       expect_not_to_be_output = "this text should not be echoed"
       command_block = proc do
         group do
-         check %(exit 1)
+          check %(exit 1)
         end
 
         check %(echo '#{expect_not_to_be_output}')
@@ -110,7 +112,7 @@ RSpec.describe Tollgate::Runner do
 
       expect { runner.(command_block) }
         .not_to output(a_string_including(expect_not_to_be_output))
-                  .to_stdout_from_any_process
+        .to_stdout_from_any_process
     end
 
     it "does check subsequent commands after a successful group check" do
@@ -128,7 +130,7 @@ RSpec.describe Tollgate::Runner do
 
       expect { runner.(command_block) }
         .to output(a_string_including(expect_to_be_output))
-              .to_stdout_from_any_process
+        .to_stdout_from_any_process
     end
 
     it "does not check subsequent group commands after a failed group check" do
@@ -146,7 +148,7 @@ RSpec.describe Tollgate::Runner do
 
       expect { runner.(command_block) }
         .not_to output(a_string_including(expect_not_to_be_output))
-              .to_stdout_from_any_process
+        .to_stdout_from_any_process
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "reporter"
 require_relative "runner/group"
 
@@ -13,7 +15,7 @@ module Tollgate
     end
 
     def success?
-      !!@success
+      @success
     end
 
     def failed?
@@ -38,7 +40,7 @@ module Tollgate
     def group(group_name = Undefined, &command_block)
       return if failed?
       group_runner = Tollgate::Runner::Group.new(group_name, reporter: @reporter)
-      @success = group_runner.call(&command_block)
+      @success = group_runner.(&command_block)
     end
 
     private

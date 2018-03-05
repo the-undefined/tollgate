@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "reporter/records"
 
 module Tollgate
@@ -20,14 +22,14 @@ module Tollgate
       success: "PASS",
       failed: "FAIL",
       not_run: "NOT RUN"
-    }
+    }.freeze
 
     def report(success:)
       run_result = success ? SUCCESS_OUTPUT : FAILED_OUTPUT
 
       <<~OUTPUT
-      #{command_statuses.join}
-      #{run_result}
+        #{command_statuses.join}
+        #{run_result}
       OUTPUT
     end
 
@@ -37,7 +39,7 @@ module Tollgate
       @records.map do |record|
         status = STATUSES.fetch(record.status)
         <<~OUTPUT
-        #{status}: #{record.command}
+          #{status}: #{record.command}
         OUTPUT
       end
     end

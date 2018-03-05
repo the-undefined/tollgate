@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe Tollgate::Runner::Group do
@@ -35,15 +37,15 @@ RSpec.describe Tollgate::Runner::Group do
 
     expect { described_class.new.(&command_block) }
       .to output(a_string_including(expected_text))
-            .to_stdout_from_any_process
+      .to_stdout_from_any_process
   end
 
   it "does not try to output an undefined name" do
     runner = described_class.new
 
     expect { runner.() }
-      .not_to output(a_string_including(("Undefined")))
-            .to_stdout
+      .not_to output(a_string_including("Undefined"))
+      .to_stdout
   end
 
   context "named group" do
@@ -52,8 +54,8 @@ RSpec.describe Tollgate::Runner::Group do
       runner = described_class.new(group_name)
 
       expect { runner.() }
-        .to output(a_string_including((group_name)))
-              .to_stdout
+        .to output(a_string_including(group_name))
+        .to_stdout
     end
 
     it "outputs the groupname that is a symbol" do
@@ -61,8 +63,8 @@ RSpec.describe Tollgate::Runner::Group do
       runner = described_class.new(group_name)
 
       expect { runner.() }
-        .to output(a_string_including(("linters")))
-              .to_stdout
+        .to output(a_string_including("linters"))
+        .to_stdout
     end
   end
 
@@ -89,8 +91,8 @@ RSpec.describe Tollgate::Runner::Group do
       runner = described_class.new
 
       expect { runner.(&command_block) }
-        .to output(a_string_including('command 3'))
-              .to_stdout_from_any_process
+        .to output(a_string_including("command 3"))
+        .to_stdout_from_any_process
     end
   end
 end

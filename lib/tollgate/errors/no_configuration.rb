@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Tollgate
   module Errors
     class NoConfiguration < StandardError
