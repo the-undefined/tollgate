@@ -1,22 +1,18 @@
 # Tollgate
 
-Have you paid your code toll? To get your code into the groomed and uniform metropolis
-where the static analysers enforcers run the place then you need to put extra effort
-and pay the code toll. Invest in a better future!
+Have you paid your code toll? To get your code into the groomed and uniform metropolis where the static analyser enforcers run the place, then you need to put extra effort and pay the code toll before you are allowed through.
+Invest in a better future!
 
-Making it easy to add static code analysers to your workflow.
-Build a list of shell commands to execute and check your code locally and on your CI server.
+Making it easy to add static code analysers to your workflow. Build a list of shell commands to execute and check your code locally and on your CI server.
 
-All checks need to pass before the tollgate approves the code, if any of the check fail
-then a non-zero exit status will be returned, so if using on CI server then the build
-will fail too.
+All checks need to pass before the tollgate approves the code, if any of the checks fail then a non-zero exit status will be returned, so if using on a CI server then the build will fail.
 
 ## Quickstart
 
 Add the gem to your project:
 
 ```rb
-group :development do
+group :development, :test do
   gem "tollgate", require: false
 end
 ```
@@ -44,14 +40,10 @@ FAIL rspec
 
 ## Grouping Commands
 
-Sometimes you may want several checks to run regardless if one of them has failed,
-so that you can make related changes before running the tollgate again.
+Sometimes you may want several checks to run regardless if one of them has failed, so that you can make related changes before running the tollgate again.
 
-For instance `rubocop` and `standard` check for Ruby and JavaScript
-code styles and it makes sense for you to get the output of both of these at the same time.
-Whereas `rubocop` and `rspec` are not related in their information, and running a test
-suite takes longer, so you would probably like to get the tollgate to fail early so
-that you can fix the style changes before running the tollgate again.
+For instance `rubocop` and `standard` check for Ruby and JavaScript code styles and it makes sense for you to get the output of both of these at the same time.
+Whereas `rubocop` and `rspec` are not related in their information, so by grouping `rubocop` and `standard` you can fix the style changes together before running the tollgate again to get the output from `rspec`:
 
 ```rb
 Tollgate.config do
@@ -73,8 +65,7 @@ FAIL: standard | snazzy
 NOT RUN: rspec
 ```
 
-You do not need to specify a group name if you can't think of one, (naming things is hard!),
-and you can specify as many as you like:
+You do not need to specify a group name if you can't think of one, naming things is hard(!), and you can specify as many groups as you like:
 
 ```rb
 Tollgate.config do
@@ -92,8 +83,7 @@ Tollgate.config do
   check "cucumber"
 end
 ```
-In the example above, if the first group fails then the second group will not be run, nor will
-any checks that come later in the list, the output would look like:
+In the example above, if the first group fails then the second group will not be run, nor will any checks that come later in the list, the output would look like:
 
 ```sh
 # ...
