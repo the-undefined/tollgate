@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 lib = File.expand_path("lib", __dir__)
@@ -27,5 +26,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "byebug", "~> 10.0"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "rubocop", "~> 0.53"
   spec.add_runtime_dependency "dry-core", "~> 0.4"
 end

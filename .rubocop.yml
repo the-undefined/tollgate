@@ -10,7 +10,7 @@ Metrics/LineLength:
   Max: 120
 Style/LambdaCall:
   EnforcedStyle: braces
-Style/BlockLength:
+Metrics/BlockLength:
   Exclude:
     - 'Rakefile'
     - '**/*.rake'

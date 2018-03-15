@@ -3,8 +3,7 @@ language: ruby
 rvm:
 - 2.3.5
 before_install: gem install bundler -v 1.16.1
-script:
-  - bundle exec bin/test
+script: bundle exec bin/test
 deploy:
   provider: rubygems
   api_key:
