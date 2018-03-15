@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/the-undefined/tollgate.svg?branch=master)](https://travis-ci.org/the-undefined/tollgate)
+
 # Tollgate
 
 Have you paid your code toll? To get your code into the groomed and uniform metropolis where the static analyser enforcers run the place, then you need to put extra effort and pay the code toll before you are allowed through.
