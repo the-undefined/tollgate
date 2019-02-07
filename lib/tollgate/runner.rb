@@ -28,6 +28,7 @@ module Tollgate
 
     def check(command_str)
       return record_not_run(command_str) if failed?
+
       @success = system(command_str)
 
       if success?
@@ -39,6 +40,7 @@ module Tollgate
 
     def group(group_name = Undefined, &command_block)
       return if failed?
+
       group_runner = Tollgate::Runner::Group.new(group_name, reporter: @reporter)
       @success = group_runner.(&command_block)
     end
