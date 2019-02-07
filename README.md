@@ -19,10 +19,10 @@ group :development, :test do
 end
 ```
 
-Define a configuration file at `config/tollgate_config.rb`
+Define a configuration file at `config/tollgate_config.rb` and use the `check` method for any of the command line tools you want to run on your project:
 
 ```rb
-Tollgate.config do
+Tollgate.configure do
   check "rubocop"
   check "brakeman"
   check "rspec"
@@ -48,10 +48,10 @@ For instance `rubocop` and `standard` check for Ruby and JavaScript code styles 
 Whereas `rubocop` and `rspec` are not related in their information, so by grouping `rubocop` and `standard` you can fix the style changes together before running the tollgate again to get the output from `rspec`:
 
 ```rb
-Tollgate.config do
+Tollgate.configure do
   group :styles do
-    check "rubocop"
     check "standard | snazzy"
+    check "rubocop"
   end
   
   check "rspec"
@@ -62,15 +62,15 @@ end
 $ tollgate
 # ... output from checks being run
 
-PASS: rubocop
 FAIL: standard | snazzy
+PASS: rubocop
 NOT RUN: rspec
 ```
 
 You do not need to specify a group name if you can't think of one, naming things is hard(!), and you can specify as many groups as you like:
 
 ```rb
-Tollgate.config do
+Tollgate.configure do
   group do
     check "rubocop"
     check "standard | snazzy"
